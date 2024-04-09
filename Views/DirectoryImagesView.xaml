@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="BackgroundWPF.Views.DirectoryImagesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BackgroundWPF.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" 
+              HorizontalAlignment="Left"
+              Margin="0,1,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" 
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Source="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"
+                   Stretch="Uniform">
+            </Image>
+            <StackPanel Grid.Row="1">
+            
+            </StackPanel>            
+        </Grid>
+
+        <DataGrid Name="dgDirectoryImages"
+                  HorizontalAlignment="Center"
+                  Grid.Column="1"
+                  Width="auto"
+                  IsReadOnly="True"
+                  ItemsSource="{ Binding Path=DirectoryImages }"
+                  AutoGenerateColumns="False"
+                  VerticalScrollBarVisibility="Visible">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Directory Image" Binding="{Binding Path=ImageName}"/>
+                <DataGridTextColumn Header="Directory Image" Binding="{Binding Path=Directory}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</UserControl>
