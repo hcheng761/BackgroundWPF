@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using BackgroundWPF.Models;
 
 
@@ -19,13 +20,13 @@ namespace BackgroundWPF.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private DirectoryImage _displayedImage;
-        public DirectoryImage DisplayedImage
+        private DirectoryImage _selectedImage;
+        public DirectoryImage SelectedImage
         {
-            get { return _displayedImage; }
+            get { return _selectedImage; }
             set 
-            {   _displayedImage = value;
-                DisplayImagePath = _displayedImage.Directory;
+            {   _selectedImage = value;
+                DisplayImagePath = _selectedImage.Directory;
                 OnPropertyChanged("DisplayedImage"); 
             }
         }
@@ -46,7 +47,6 @@ namespace BackgroundWPF.ViewModels
         {
             directoryService = new DirectoryService();
             DirectoryImages = new ObservableCollection<DirectoryImage>(directoryService.GetListOfImages());
-            DisplayedImage = directoryService.displayFirstImage();
         }
 
         private ObservableCollection<DirectoryImage> directoryImages;

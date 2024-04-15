@@ -21,6 +21,7 @@ namespace BackgroundWPF.Models
         {
             Directory = directory;
             ImageName = Path.GetFileName(directory);
+            ImageNameShortened = shortenName(ImageName);
         }
 
         private string directory;
@@ -35,6 +36,21 @@ namespace BackgroundWPF.Models
         {
             get { return imageName; }
             set { imageName = value; OnPropertyChanged(nameof(ImageName)); }
+        }
+
+        private string imageNameShortened;
+        public string ImageNameShortened
+        {
+            get { return imageNameShortened; }
+            set { imageNameShortened = value; OnPropertyChanged(nameof(ImageNameShortened));}
+        }
+
+        private string shortenName(string name)
+        {
+            if (name.Length > 8)
+                return name.Substring(0, 8) + "...";
+            else
+                return name;
         }
     }
 }

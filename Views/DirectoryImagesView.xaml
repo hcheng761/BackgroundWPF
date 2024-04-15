@@ -24,24 +24,22 @@
                    Source="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"
                    Stretch="Uniform">
             </Image>
-            <StackPanel Grid.Row="1">
-            
-            </StackPanel>            
         </Grid>
-
-        <DataGrid Name="dgDirectoryImages"
-                  HorizontalAlignment="Center"
+        <ListView Name="dgDirectoryImages"
+                  HorizontalAlignment="Stretch"
                   Grid.Column="1"
+                  ItemsSource="{Binding DirectoryImages}"
                   Width="auto"
-                  IsReadOnly="True"
-                  ItemsSource="{ Binding Path=DirectoryImages }"
-                  AutoGenerateColumns="False"
-                  VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Directory Image" Binding="{Binding Path=ImageName}"/>
-                <DataGridTextColumn Header="Directory Image" Binding="{Binding Path=Directory}"/>
-            </DataGrid.Columns>
-
-        </DataGrid>
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedImage}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image Height="50" Width="50"  Source="{Binding Directory}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" />
+                        <TextBlock Margin="10,0,0,0" Text="{Binding ImageNameShortened}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>
