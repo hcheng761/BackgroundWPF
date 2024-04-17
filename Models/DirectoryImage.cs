@@ -45,6 +45,12 @@ namespace BackgroundWPF.Models
             set { imageNameShortened = value; OnPropertyChanged(nameof(ImageNameShortened));}
         }
 
+        private DateTime dateTimeChange;
+        public DateTime DateTimeChange
+        {
+            get { return dateTimeChange; }
+            set { dateTimeChange = value; OnPropertyChanged(nameof(DateTimeChange)); }
+        }
         private string shortenName(string name)
         {
             if (name.Length > 8)
