@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -80,6 +81,15 @@ namespace BackgroundWPF.Models
             {
                 return null;
             }
+        }
+
+        public async Task ChangeWindowsBackground(DirectoryImage dImage)
+        {
+            const int SET_DESKTOP_BACKGROUND = 20;
+            const int UPDATE_INI_FILE = 1;
+            const int SEND_WINDOWS_INI_CHANGE = 2;
+
+            win32.SystemParametersInfo(SET_DESKTOP_BACKGROUND, 0, dImage.Directory, UPDATE_INI_FILE | SEND_WINDOWS_INI_CHANGE);
         }
     }
 }
