@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace BackgroundWPF.Models
 
         public DirectoryService()
         {
-            MainImageDirectory = "H:\\Pictures";
-            //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
+            //MainImageDirectory = "H:\\Pictures";
+            MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
             MainImageCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }
@@ -83,12 +84,15 @@ namespace BackgroundWPF.Models
             }
         }
 
-        public async Task ChangeWindowsBackground(DirectoryImage dImage)
+        public void ChangeWindowsBackground(DirectoryImage dImage)
         {
             const int SET_DESKTOP_BACKGROUND = 20;
             const int UPDATE_INI_FILE = 1;
             const int SEND_WINDOWS_INI_CHANGE = 2;
 
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
+            key.SetValue("TileWallpaper", 0);
+            key.SetValue("WallpaperStyle", 0);
             win32.SystemParametersInfo(SET_DESKTOP_BACKGROUND, 0, dImage.Directory, UPDATE_INI_FILE | SEND_WINDOWS_INI_CHANGE);
         }
     }

@@ -17,6 +17,13 @@ namespace BackgroundWPF.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public DirectoryImage()
+        {
+            Directory = string.Empty;
+            ImageName = string.Empty;
+            ImageNameShortened = string.Empty;
+        }
+
         public DirectoryImage(string directory)
         {
             Directory = directory;
