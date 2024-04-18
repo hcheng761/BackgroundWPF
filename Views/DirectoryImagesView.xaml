@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BackgroundWPF.Views"
+             xmlns:local="clr-namespace:BackgroundWPF.Views" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10">
@@ -12,11 +12,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" 
-              HorizontalAlignment="Left"
+              HorizontalAlignment="Center"
               Margin="0,1,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <Image Grid.Row="0" 
                    HorizontalAlignment="Left"
@@ -24,6 +25,34 @@
                    Source="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"
                    Stretch="Uniform">
             </Image>
+            <TextBlock Grid.Row="1"
+                       Name="ImageDisplayName" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <xctk:IntegerUpDown Name="imgHour" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgMinute" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgSecond" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                    <TextBlock Text="HR" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+                    <TextBlock Text="MIN" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                    <TextBlock Text="SEC" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>
+                </Grid>
+            </Grid>
         </Grid>
         <ListView Name="dgDirectoryImages"
                   HorizontalAlignment="Stretch"
