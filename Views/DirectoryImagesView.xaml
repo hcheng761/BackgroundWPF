@@ -35,7 +35,11 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Image Height="50" Width="50"  Source="{Binding Directory}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" />
+                        <Image Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform">
+                            <Image.Source>
+                                <BitmapImage DecodePixelWidth="50" UriSource="{Binding Directory}"/>
+                            </Image.Source>
+                        </Image>
                         <TextBlock Margin="10,0,0,0" Text="{Binding ImageNameShortened}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>

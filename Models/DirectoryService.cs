@@ -14,7 +14,8 @@ namespace BackgroundWPF.Models
 
         public DirectoryService()
         {
-            MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
+            MainImageDirectory = "H:\\Pictures";
+            //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
             MainImageCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }

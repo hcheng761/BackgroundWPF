@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BackgroundWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        xmlns:vw="clr-namespace:BackgroundWPF.Views">
+        Title="BackgroundWPF" Height="563" Width="1000"
+        xmlns:vw="clr-namespace:BackgroundWPF.Views"
+        ResizeMode="NoResize"
+        Name="BackgroundWPF">
     <Grid>
         <vw:DirectoryImagesView/>
     </Grid>
