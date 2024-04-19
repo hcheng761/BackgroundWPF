@@ -36,7 +36,12 @@
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
                        Text="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="1" Command="{Binding Path=ChangeBGCommand}" Name="ChangeBG" Content="Set as background" HorizontalAlignment="Center" VerticalAlignment="Top" Width="auto"/>
+                <Button Grid.Row="1"    
+                        Command="{Binding Path=ChangeBGCommand}" 
+                        Name="ChangeBG" Content="Set as background" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Top" 
+                        Width="auto"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -56,9 +61,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <xctk:IntegerUpDown Name="imgHour" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
-                    <xctk:IntegerUpDown Name="imgMinute" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
-                    <xctk:IntegerUpDown Name="imgSecond" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgHour" Value="{Binding Path=SelectedImageHour}" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgMinute" Value="{Binding Path=SelectedImageMin}" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgSecond" Value="{Binding Path=SelectedImageSec}" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
                     <TextBlock Text="HR" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
                     <TextBlock Text="MIN" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
                     <TextBlock Text="SEC" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>
@@ -76,17 +81,26 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton HorizontalAlignment="Center" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
-                <RadioButton HorizontalAlignment="Center" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
+                <RadioButton IsChecked="{Binding Path=FolderModeChecked}" Command="{Binding Path=LoadMainFolderImagesCommand}" HorizontalAlignment="Center" Name="FolderButton" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
+                <RadioButton IsChecked="{Binding Path=PresetModeChecked}" HorizontalAlignment="Center" Name="PresetButton" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
             </Grid>
-            <TextBox Grid.Row="1" Text="{Binding Path=DirectoryPath}" VerticalAlignment="Top" Width="auto" Margin="0,0,0,0"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".3*"/>
+                    <ColumnDefinition Width="14*"/>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width=".3*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="1" Text="{Binding Path=ImagesFolderPath}" IsEnabled="False"  VerticalAlignment="Center" Width="auto" Height="auto"/>
+                <Button Grid.Column="2" Command="{Binding Path=LoadMainFolderImagesCommand}" Content="..." Margin="1,0,0,0" VerticalAlignment="Center" Width="auto" Height="auto"/>
+            </Grid>
             <ListView Name="dgDirectoryImages"
-          HorizontalAlignment="Stretch"
-          Grid.Row="2"
-          ItemsSource="{Binding DirectoryImages}"
-          Width="auto"
-          SelectionMode="Single"
-          SelectedItem="{Binding SelectedImage}">
+                      HorizontalAlignment="Stretch"
+                      Grid.Row="2"
+                      ItemsSource="{Binding DirectoryImages}"
+                      Width="auto"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding SelectedImage}">   
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">

@@ -16,8 +16,9 @@ namespace BackgroundWPF.Models
 
         public DirectoryService()
         {
+            MainImageDirectory = string.Empty;
             //MainImageDirectory = "H:\\Pictures";
-            MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
+            //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
             MainImageCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }
@@ -27,10 +28,12 @@ namespace BackgroundWPF.Models
             return MainImageCollection;
         }
 
-        public List<DirectoryImage> GetListOfImages()
+        public List<DirectoryImage> GetListOfFolderImages()
         {
             List<DirectoryImage> images = new List<DirectoryImage>(); ;
 
+            if (MainImageCollection.Count == 0)
+                CreateCollection();
             foreach (KeyValuePair<string, DirectoryImage> e in MainImageCollection)
                 images.Add(e.Value);
             return images;
@@ -38,18 +41,27 @@ namespace BackgroundWPF.Models
 
         private void CreateCollection()
         {
+            if (MainImageDirectory == string.Empty)
+            {
+                return;
+            }
+
             IEnumerable<string> images = Directory.EnumerateFiles(MainImageDirectory, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(input => ImageFileExtensions.Extensions.Any(e => e.Equals(Path.GetExtension(input))));
 
             foreach (string image in images)
             {
                 MainImageCollection.Add(Path.GetFileName(image), new DirectoryImage(image));
-                System.Diagnostics.Debug.WriteLine(image);
             }
         }
 
         public void LoadNewCollection()
         {
+            if (MainImageDirectory == string.Empty)
+            {
+                return;
+            }
+
             IEnumerable<string> images = Directory.EnumerateFiles(MainImageDirectory, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(input => ImageFileExtensions.Extensions.Any(e => input.EndsWith(e)));
             
@@ -91,9 +103,18 @@ namespace BackgroundWPF.Models
             const int SEND_WINDOWS_INI_CHANGE = 2;
 
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
-            key.SetValue("TileWallpaper", 0);
-            key.SetValue("WallpaperStyle", 0);
+            key.SetValue("WallpaperStyle", 6);
             win32.SystemParametersInfo(SET_DESKTOP_BACKGROUND, 0, dImage.Directory, UPDATE_INI_FILE | SEND_WINDOWS_INI_CHANGE);
+        }
+
+        public void ChangeMainDirectory(string directory)
+        {
+            MainImageDirectory = directory;
+        }
+
+        public string GetMainDirectory()
+        {
+            return MainImageDirectory;
         }
     }
 }
