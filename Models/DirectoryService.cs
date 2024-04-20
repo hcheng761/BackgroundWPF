@@ -58,18 +58,10 @@ namespace BackgroundWPF.Models
         public void LoadNewCollection()
         {
             if (MainImageDirectory == string.Empty)
-            {
                 return;
-            }
-
-            IEnumerable<string> images = Directory.EnumerateFiles(MainImageDirectory, "*.*", SearchOption.TopDirectoryOnly)
-                .Where(input => ImageFileExtensions.Extensions.Any(e => input.EndsWith(e)));
-            
-            foreach (string image in images)
-            {
-                MainImageCollection.Add(Path.GetFileName(image), new DirectoryImage(image));
-                System.Diagnostics.Debug.WriteLine(image);
-            }
+            if (MainImageCollection.Count > 0)
+                MainImageCollection.Clear();
+            CreateCollection();
         }
 
         public void Add(string path)
@@ -110,6 +102,7 @@ namespace BackgroundWPF.Models
         public void ChangeMainDirectory(string directory)
         {
             MainImageDirectory = directory;
+            LoadNewCollection();
         }
 
         public string GetMainDirectory()

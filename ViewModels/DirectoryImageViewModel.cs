@@ -33,6 +33,7 @@ namespace BackgroundWPF.ViewModels
             DirectoryImages = new ObservableCollection<DirectoryImage>();
             changeBGCommand = new RelayCommand(ButtonChangeBackground);
             loadMainFolderImagesCommand = new RelayCommand(LoadMainDirectoryImages);
+            loadFolderCommand = new RelayCommand(LoadFolderModeImages);
             ImagesFolderPath = directoryService.GetMainDirectory();
         }
 
@@ -42,8 +43,7 @@ namespace BackgroundWPF.ViewModels
             get { return _selectedImage; }
             set
             {
-                _selectedImage = value;
-                DisplayImagePath = _selectedImage.Directory; OnPropertyChanged("DisplayedImage"); OnPropertyChanged(nameof(SelectedImage));
+                _selectedImage = value; OnPropertyChanged(nameof(SelectedImage));
             }
         }
 
@@ -133,15 +133,12 @@ namespace BackgroundWPF.ViewModels
             {
                 string SelectedPath = ImagesFolderPath;
 
-                if (ImagesFolderPath == string.Empty)
+                using (var fbd = new FolderBrowserDialog())
                 {
-                    using (var fbd = new FolderBrowserDialog())
+                    DialogResult result = fbd.ShowDialog();
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                     {
-                        DialogResult result = fbd.ShowDialog();
-                        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                        {
-                            SelectedPath = fbd.SelectedPath;
-                        }
+                        SelectedPath = fbd.SelectedPath;
                     }
                 }
                 if (SelectedPath != string.Empty)
@@ -155,6 +152,17 @@ namespace BackgroundWPF.ViewModels
             {
                 throw new Exception();
             }
+        }
+
+        private RelayCommand loadFolderCommand;
+        public RelayCommand LoadFolderCommand
+        {
+            get { return loadFolderCommand; }
+        }
+        public void LoadFolderModeImages()
+        {
+            DirectoryImages = new ObservableCollection<DirectoryImage>(directoryService.GetListOfFolderImages());
+            ImagesFolderPath = directoryService.GetMainDirectory();
         }
     }
 }

@@ -15,27 +15,32 @@
               HorizontalAlignment="Center"
               Margin="0,1,0,0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" 
+            <CheckBox Content="Enable Background Scheduler" HorizontalAlignment="Left"
+                      Command="{Binding Path=EnableScheduleModeCommand}" IsChecked="{Binding Path=ScheduleMode}"/>
+            <Image Grid.Row="1" 
+                   DataContext="{Binding Path=SelectedImage}"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Source="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"
+                   Source="{Binding Directory, UpdateSourceTrigger=PropertyChanged}"
                    Stretch="Uniform">
             </Image>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
                        Name="ImageDisplayName" 
+                       DataContext="{Binding Path=SelectedImage}"
                        FontSize="16" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
-                       Text="{Binding DisplayImagePath, UpdateSourceTrigger=PropertyChanged}"/>
+                       Text="{Binding Directory, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Row="1"    
                         Command="{Binding Path=ChangeBGCommand}" 
                         Name="ChangeBG" Content="Set as background" 
@@ -43,7 +48,7 @@
                         VerticalAlignment="Top" 
                         Width="auto"/>
             </Grid>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -75,24 +80,23 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="15*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton IsChecked="{Binding Path=FolderModeChecked}" Command="{Binding Path=LoadMainFolderImagesCommand}" HorizontalAlignment="Center" Name="FolderButton" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
+                <RadioButton IsChecked="{Binding Path=FolderModeChecked}" Command="{Binding Path=LoadFolderCommand}" HorizontalAlignment="Center" Name="FolderButton" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
                 <RadioButton IsChecked="{Binding Path=PresetModeChecked}" HorizontalAlignment="Center" Name="PresetButton" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=".3*"/>
                     <ColumnDefinition Width="14*"/>
                     <ColumnDefinition Width="1.2*"/>
-                    <ColumnDefinition Width=".3*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="1" Text="{Binding Path=ImagesFolderPath}" IsEnabled="False"  VerticalAlignment="Center" Width="auto" Height="auto"/>
-                <Button Grid.Column="2" Command="{Binding Path=LoadMainFolderImagesCommand}" Content="..." Margin="1,0,0,0" VerticalAlignment="Center" Width="auto" Height="auto"/>
+                <TextBox Grid.Column="0" Text="{Binding Path=ImagesFolderPath}" IsEnabled="False"  VerticalAlignment="Center" Width="auto" Height="auto"/>
+                <Button Grid.Column="1" Command="{Binding Path=LoadMainFolderImagesCommand}" Content="..." Margin="1,0,0,0" VerticalAlignment="Center" Width="auto" Height="auto"/>
             </Grid>
             <ListView Name="dgDirectoryImages"
                       HorizontalAlignment="Stretch"
