@@ -68,7 +68,7 @@
                     </Grid.ColumnDefinitions>
                     <xctk:IntegerUpDown Name="imgHour" Value="{Binding Path=SelectedImageHour}" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
                     <xctk:IntegerUpDown Name="imgMinute" Value="{Binding Path=SelectedImageMin}" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
-                    <xctk:IntegerUpDown Name="imgSecond" Value="{Binding Path=SelectedImageSec}" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                    <xctk:IntegerUpDown Name="imgSecond" Value="{Binding Path=SelectedImageSec}" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="{Binding Path=SecondMinValue}" AllowTextInput="False"/>
                     <TextBlock Text="HR" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
                     <TextBlock Text="MIN" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
                     <TextBlock Text="SEC" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>

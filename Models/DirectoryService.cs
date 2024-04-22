@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BackgroundWPF.Models
 {
@@ -13,12 +14,14 @@ namespace BackgroundWPF.Models
     {
         private static Dictionary<string, DirectoryImage> MainImageCollection;
         private static string MainImageDirectory;
+        private static string PresetsDirectory;
 
         public DirectoryService()
         {
             MainImageDirectory = string.Empty;
             //MainImageDirectory = "H:\\Pictures";
             //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
+            PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "BackgroundPresets";
             MainImageCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }
@@ -108,6 +111,13 @@ namespace BackgroundWPF.Models
         public string GetMainDirectory()
         {
             return MainImageDirectory;
+        }
+
+        public void CreatePreset(string presetName)
+        {
+            Directory.CreateDirectory(PresetsDirectory);
+            XDocument xdoc = new XDocument(new XElement("Preset", new XElement("Name", presetName)));
+            xdoc.Save(PresetsDirectory + "\\" + presetName + DateTime.Today.Millisecond + ".xml");
         }
     }
 }

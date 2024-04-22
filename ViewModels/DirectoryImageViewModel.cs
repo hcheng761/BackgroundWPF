@@ -82,6 +82,13 @@ namespace BackgroundWPF.ViewModels
             set { selectedImageSec = value; OnPropertyChanged(nameof(SelectedImageSec)); }
         }
 
+        private string secondMinValue;
+        public string SecondMinValue
+        {
+            get { return secondMinValue; }
+            set { secondMinValue = value; OnPropertyChanged(nameof(SecondMinValue));}
+        }
+
         private ObservableCollection<DirectoryImage> directoryImages;
         public ObservableCollection<DirectoryImage> DirectoryImages
         {
