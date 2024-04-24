@@ -35,6 +35,7 @@ namespace BackgroundWPF.ViewModels
             loadMainFolderImagesCommand = new RelayCommand(LoadMainDirectoryImages);
             loadFolderCommand = new RelayCommand(LoadFolderModeImages);
             ImagesFolderPath = directoryService.GetMainDirectory();
+            createFolderPresetCommand = new RelayCommand(CreateFolderPresetFile);
         }
 
         private DirectoryImage _selectedImage;
@@ -87,6 +88,13 @@ namespace BackgroundWPF.ViewModels
         {
             get { return secondMinValue; }
             set { secondMinValue = value; OnPropertyChanged(nameof(SecondMinValue));}
+        }
+
+        private string statusText;
+        public string StatusText
+        {
+            get { return statusText; }
+            set { statusText = value; OnPropertyChanged(nameof(StatusText)); }
         }
 
         private ObservableCollection<DirectoryImage> directoryImages;
@@ -166,10 +174,33 @@ namespace BackgroundWPF.ViewModels
         {
             get { return loadFolderCommand; }
         }
+
         public void LoadFolderModeImages()
         {
             DirectoryImages = new ObservableCollection<DirectoryImage>(directoryService.GetListOfFolderImages());
             ImagesFolderPath = directoryService.GetMainDirectory();
+        }
+
+        private RelayCommand createFolderPresetCommand;
+        public RelayCommand CreateFolderPresetCommand
+        {
+            get
+            {
+                return createFolderPresetCommand;
+            }
+        }
+
+        public void CreateFolderPresetFile()
+        {
+            if (directoryService.CreatePresetFromFolder())
+                Task.Run(ChangeStatusText);
+        }
+
+        public async void ChangeStatusText()
+        {
+            StatusText = "Preset created from selected folder.";
+            await Task.Delay(5000);
+            StatusText = string.Empty;
         }
     }
 }

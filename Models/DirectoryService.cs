@@ -21,7 +21,7 @@ namespace BackgroundWPF.Models
             MainImageDirectory = string.Empty;
             //MainImageDirectory = "H:\\Pictures";
             //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
-            PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "BackgroundPresets";
+            PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\" + "BackgroundPresets";
             MainImageCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }
@@ -118,6 +118,29 @@ namespace BackgroundWPF.Models
             Directory.CreateDirectory(PresetsDirectory);
             XDocument xdoc = new XDocument(new XElement("Preset", new XElement("Name", presetName)));
             xdoc.Save(PresetsDirectory + "\\" + presetName + DateTime.Today.Millisecond + ".xml");
+        }
+
+        public bool CreatePresetFromFolder()
+        {
+            Directory.CreateDirectory(PresetsDirectory);
+            if (MainImageDirectory != string.Empty)
+            {
+                string dirName = new DirectoryInfo(MainImageDirectory).Name;
+                XDocument xdoc = new XDocument(new XElement("Preset", new XElement("Name", dirName)));
+
+                int counter = 0;
+                foreach (var k in MainImageCollection.Values)
+                {
+                    xdoc.Element("Preset").Add(new XElement("Image",
+                        new XElement("Path", k.Directory),
+                        new XElement("Time", (int)DateTime.Now.TimeOfDay.TotalSeconds + (counter * 10))));
+                    counter++;
+                }
+
+                xdoc.Save(PresetsDirectory + "\\" + dirName + Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds) + ".xml");
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -80,7 +80,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="15*"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -104,7 +105,7 @@
                       ItemsSource="{Binding DirectoryImages}"
                       Width="auto"
                       SelectionMode="Single"
-                      SelectedItem="{Binding SelectedImage}">   
+                      SelectedItem="{Binding SelectedImage}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -118,6 +119,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Grid.Row="3" Width="120" Height="20" VerticalAlignment="Bottom"
+                    Content="Create folder preset"
+                    Command="{Binding Path=CreateFolderPresetCommand}"
+                    IsEnabled="{Binding Path=FolderModeChecked}"/>
+            <TextBlock Grid.Row="4" Text="{Binding Path=StatusText}"/>
         </Grid>
     </Grid>
 </UserControl>
