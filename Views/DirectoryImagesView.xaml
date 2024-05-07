@@ -12,67 +12,87 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" 
-              HorizontalAlignment="Center"
               Margin="0,1,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="4*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <CheckBox Content="Enable Background Scheduler" HorizontalAlignment="Left"
-                      Command="{Binding Path=EnableScheduleModeCommand}" IsChecked="{Binding Path=ScheduleMode}"/>
-            <Image Grid.Row="1" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <CheckBox   Content="Enable Background Scheduler" HorizontalAlignment="Center"
+                            Command="{Binding Path=EnableScheduleModeCommand}" IsChecked="{Binding Path=ScheduleMode}"/>
+                <Image Grid.Row="1" 
                    DataContext="{Binding Path=SelectedImage}"
-                   HorizontalAlignment="Left"
+                   HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Source="{Binding Directory, UpdateSourceTrigger=PropertyChanged}"
                    Stretch="Uniform">
-            </Image>
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"
+                </Image>
+                <Grid Grid.Row="2" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
                        Name="ImageDisplayName" 
                        DataContext="{Binding Path=SelectedImage}"
                        FontSize="16" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" 
                        Text="{Binding Directory, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="1"    
+                    <Button Grid.Row="1"    
                         Command="{Binding Path=ChangeBGCommand}" 
                         Name="ChangeBG" Content="Set as background" 
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Top" 
                         Width="auto"/>
-            </Grid>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                </Grid>
+                <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <xctk:IntegerUpDown Name="imgHour" Value="{Binding Path=SelectedImageHour}" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
-                    <xctk:IntegerUpDown Name="imgMinute" Value="{Binding Path=SelectedImageMin}" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
-                    <xctk:IntegerUpDown Name="imgSecond" Value="{Binding Path=SelectedImageSec}" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="{Binding Path=SecondMinValue}" AllowTextInput="False"/>
-                    <TextBlock Text="HR" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-                    <TextBlock Text="MIN" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
-                    <TextBlock Text="SEC" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>
+                    <Grid Grid.Column="1" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <xctk:IntegerUpDown Name="imgHour" Value="{Binding Path=SelectedImageHour}" Grid.Column="0" Grid.Row="2"  Height="auto" Width="auto" Maximum="23" Minimum="0" AllowTextInput="False"/>
+                        <xctk:IntegerUpDown Name="imgMinute" Value="{Binding Path=SelectedImageMin}" Grid.Column="1" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="0" AllowTextInput="False"/>
+                        <xctk:IntegerUpDown Name="imgSecond" Value="{Binding Path=SelectedImageSec}" Grid.Column="2" Grid.Row="2"  Height="auto" Width="auto" Maximum="59" Minimum="{Binding Path=SecondMinValue}" AllowTextInput="False"/>
+                        <TextBlock Text="HR" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="MIN" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                        <TextBlock Text="SEC" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="3"/>
+                    </Grid>
                 </Grid>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Content="Add" Grid.Row="1" Margin="3,12,3,12"/>
+                <Button Content="Edit" Grid.Row="2" Margin="3,12,3,12"/>
+                <Button Content="Remove" Grid.Row="3" Margin="3,12,3,12"/>
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
