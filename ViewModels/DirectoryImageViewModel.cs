@@ -27,9 +27,11 @@ namespace BackgroundWPF.ViewModels
         #endregion
 
         DirectoryService directoryService;
+        PresetService presetService;
         public DirectoryImageViewModel()
         {
             directoryService = new DirectoryService();
+            presetService = new PresetService();
             DirectoryImages = new ObservableCollection<DirectoryImage>();
             changeBGCommand = new RelayCommand(ButtonChangeBackground);
             loadMainFolderImagesCommand = new RelayCommand(LoadMainDirectoryImages);
@@ -95,6 +97,13 @@ namespace BackgroundWPF.ViewModels
         {
             get { return statusText; }
             set { statusText = value; OnPropertyChanged(nameof(StatusText)); }
+        }
+
+        private string comboBoxText;
+        public string ComboBoxText
+        {
+            get { return comboBoxText; }
+            set { comboBoxText = value; OnPropertyChanged(nameof(ComboBoxText)); }
         }
 
         private ObservableCollection<DirectoryImage> directoryImages;
