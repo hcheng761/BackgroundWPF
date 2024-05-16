@@ -36,8 +36,10 @@ namespace BackgroundWPF.ViewModels
             changeBGCommand = new RelayCommand(ButtonChangeBackground);
             loadMainFolderImagesCommand = new RelayCommand(LoadMainDirectoryImages);
             loadFolderCommand = new RelayCommand(LoadFolderModeImages);
+            loadPresetsCommand = new RelayCommand(LoadPresetBox);
             ImagesFolderPath = directoryService.GetMainDirectory();
             createFolderPresetCommand = new RelayCommand(CreateFolderPresetFile);
+            selectionChangedCommand = new RelayCommand(ComboSelectionChangedCommand);
         }
 
         private DirectoryImage _selectedImage;
@@ -99,11 +101,18 @@ namespace BackgroundWPF.ViewModels
             set { statusText = value; OnPropertyChanged(nameof(StatusText)); }
         }
 
-        private string comboBoxText;
-        public string ComboBoxText
+        private List<string> comboBoxItems;
+        public List<string> ComboBoxItems
         {
-            get { return comboBoxText; }
-            set { comboBoxText = value; OnPropertyChanged(nameof(ComboBoxText)); }
+            get { return comboBoxItems; }
+            set { comboBoxItems = value; OnPropertyChanged(nameof(ComboBoxItems)); }
+        }
+
+        private string selectedImages;
+        public string SelectedImages
+        {
+            get { return selectedImages; }
+            set { selectedImages = value; OnPropertyChanged(nameof(SelectedImages)); ComboSelectionChangedCommand(); }
         }
 
         private ObservableCollection<DirectoryImage> directoryImages;
@@ -125,6 +134,37 @@ namespace BackgroundWPF.ViewModels
         {
             get { return presetModeChecked; }
             set { presetModeChecked = value; OnPropertyChanged(nameof(PresetModeChecked)); }
+        }
+
+        private RelayCommand loadPresetsCommand;
+        public RelayCommand LoadPresetsCommand
+        {
+            get { return loadPresetsCommand; }
+        }
+
+        public void LoadPresetBox()
+        {
+            ComboBoxItems = presetService.GetPresetNames();
+            LoadPresetDirectoryImages();
+        }
+
+        public void LoadPresetDirectoryImages()
+        {
+            DirectoryImages = new ObservableCollection<DirectoryImage>(presetService.GetPresetImagesList(SelectedImages));
+        }
+
+        private RelayCommand selectionChangedCommand;
+        public RelayCommand SelectionChangedCommand
+        {
+            get { return selectionChangedCommand; } 
+        }
+
+        public void ComboSelectionChangedCommand()
+        {
+            if (PresetModeChecked)
+                LoadPresetDirectoryImages();
+            //else if (FolderModeChecked)
+            //    LoadFolderModeImages();
         }
 
         private RelayCommand changeBGCommand;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace BackgroundWPF.Models
 {
@@ -17,22 +18,46 @@ namespace BackgroundWPF.Models
         {
             PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\" + "BackgroundPresets";
             MainPresetCollection = new Dictionary<string, List<DirectoryImage>>();
-            CreatePresetCollection();
+            CreatePresetFolderCollection();
         }
 
-        public void CreatePresetCollection()
+        public void CreatePresetFolderCollection()
         {
             var PresetFiles = Directory.GetFiles(PresetsDirectory, "*.xml");
 
             foreach (var presetFile in PresetFiles)
             {
-                XmlDocument xmlDoc = new XmlDocument();
-                XmlNodeList path = xmlDoc.GetElementsByTagName("Path");
+                XDocument doc = XDocument.Load(presetFile);
+                var nodes = doc.Root.Elements("Image");
 
-                MainPresetCollection.Add(path[0].InnerText, new List<DirectoryImage>());
-                xmlDoc.Load(presetFile);
-
+                if (nodes.Count() > 0)
+                {
+                    List<DirectoryImage> images = new List<DirectoryImage>();
+                    foreach (XElement node in nodes)
+                    {
+                        images.Add(new DirectoryImage(node.Elements("Path").First().Value));
+                    }
+                    MainPresetCollection.Add(doc.Root.Elements("Name").First().Value, images);
+                }
             }
+        }
+
+        public List<string> GetPresetNames()
+        {
+            return new List<string>(MainPresetCollection.Keys);
+        }
+
+        public Dictionary<string, List<DirectoryImage>> GetPresetCollection()
+        {
+            return MainPresetCollection;
+        }
+
+        public List<DirectoryImage> GetPresetImagesList(string preset)
+        {
+            if (preset != null)
+                return MainPresetCollection[preset];
+            else
+                return new List<DirectoryImage>();
         }
     }
 }

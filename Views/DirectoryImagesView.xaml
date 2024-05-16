@@ -110,7 +110,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <RadioButton IsChecked="{Binding Path=FolderModeChecked}" Command="{Binding Path=LoadFolderCommand}" HorizontalAlignment="Center" Name="FolderButton" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
-                <RadioButton IsChecked="{Binding Path=PresetModeChecked}" HorizontalAlignment="Center" Name="PresetButton" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
+                <RadioButton IsChecked="{Binding Path=PresetModeChecked}" Command="{Binding Path=LoadPresetsCommand}" HorizontalAlignment="Center" Name="PresetButton" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -120,7 +120,7 @@
                 <TextBox Grid.Column="0" Text="{Binding Path=ImagesFolderPath}" IsEnabled="{Binding Path=FolderModeChecked}"  VerticalAlignment="Center" Width="auto" Height="auto"/>
                 <Button Grid.Column="1" Command="{Binding Path=LoadMainFolderImagesCommand}" Content="..." Margin="1,0,0,0" VerticalAlignment="Center" Width="auto" Height="auto"/>
             </Grid>
-            <ComboBox Grid.Row="2" Text="{Binding Path=ComboBoxText}" />
+            <ComboBox Grid.Row="2"  ItemsSource="{Binding Path=ComboBoxItems}" SelectedValue="{Binding Path=SelectedImages, Mode=TwoWay}" />
             <ListView Name="dgDirectoryImages"
                       HorizontalAlignment="Stretch"
                       Grid.Row="3"
