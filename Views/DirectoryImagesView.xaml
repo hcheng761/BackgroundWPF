@@ -83,16 +83,18 @@
             </Grid>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.6*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Add" Grid.Row="1" Margin="3,12,3,12"/>
-                <Button Content="Edit" Grid.Row="2" Margin="3,12,3,12"/>
-                <Button Content="Remove" Grid.Row="3" Margin="3,12,3,12"/>
+                <Button Content="Add" IsEnabled="{Binding PresetModeChecked}" Command ="{Binding AddImageToPresetCommand}" Grid.Row="1" Margin="3,5,3,5"/>
+                <Button Content="Edit" IsEnabled="{Binding PresetModeChecked}" Grid.Row="2" Margin="3,5,3,5"/>
+                <Button Content="Remove" IsEnabled="{Binding PresetModeChecked}" Grid.Row="3" Margin="3,5,3,5"/>
+                <Button Content="Save" IsEnabled="{Binding PresetModeChecked}" Command="{Binding SavePresetChangesCommand}" Grid.Row="4" Margin="3,5,3,5"/>
             </Grid>
         </Grid>
         <Grid Grid.Column="1">
@@ -112,7 +114,7 @@
                 <RadioButton IsChecked="{Binding Path=FolderModeChecked}" Command="{Binding Path=LoadFolderCommand}" HorizontalAlignment="Center" Name="FolderButton" Grid.Column="0" GroupName="ImageGroupMode" Content="Folder"/>
                 <RadioButton IsChecked="{Binding Path=PresetModeChecked}" Command="{Binding Path=LoadPresetsCommand}" HorizontalAlignment="Center" Name="PresetButton" Grid.Column="1" GroupName="ImageGroupMode" Content="Preset"/>
             </Grid>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" IsEnabled="{Binding Path=FolderModeChecked}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="14*"/>
                     <ColumnDefinition Width="1.2*"/>

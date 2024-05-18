@@ -12,12 +12,17 @@ namespace BackgroundWPF.Models
     public class PresetService
     {
         private static Dictionary<string, List<DirectoryImage>> MainPresetCollection;
+        private static Dictionary<string, List<DirectoryImage>> AddedImagesCollection;
+        private static Dictionary<string, List<DirectoryImage>> RemovedImagesCollection;
+
         private static string MainPreset;
         private static string PresetsDirectory;
         public PresetService() 
         {
             PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\" + "BackgroundPresets";
             MainPresetCollection = new Dictionary<string, List<DirectoryImage>>();
+            AddedImagesCollection = new Dictionary<string, List<DirectoryImage>>();
+            RemovedImagesCollection = new Dictionary<string, List<DirectoryImage>>();
             CreatePresetFolderCollection();
         }
 
@@ -35,7 +40,9 @@ namespace BackgroundWPF.Models
                     List<DirectoryImage> images = new List<DirectoryImage>();
                     foreach (XElement node in nodes)
                     {
-                        images.Add(new DirectoryImage(node.Elements("Path").First().Value));
+                        string path = node.Elements("Path").First().Value;
+                        if (File.Exists(path))
+                            images.Add(new DirectoryImage(path));
                     }
                     MainPresetCollection.Add(doc.Root.Elements("Name").First().Value, images);
                 }
@@ -52,12 +59,27 @@ namespace BackgroundWPF.Models
             return MainPresetCollection;
         }
 
+        public Dictionary<string, List<DirectoryImage>> GetAddedImagesCollection()
+        {
+            return AddedImagesCollection;
+        }
+
         public List<DirectoryImage> GetPresetImagesList(string preset)
         {
             if (preset != null)
                 return MainPresetCollection[preset];
             else
                 return new List<DirectoryImage>();
+        }
+
+        public void AddImage(string preset, DirectoryImage path)
+        {
+            AddedImagesCollection[preset].Add(path);
+        }
+
+        public void RemoveImage(string image)
+        {
+            DirectoryImage di = MainPresetCollection[image];
         }
     }
 }

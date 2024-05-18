@@ -74,6 +74,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\ImageFileExtensions.cs" />
+    <Compile Include="Models\ImagesPreset.cs" />
     <Compile Include="Models\PresetService.cs" />
     <Compile Include="Models\win32.cs" />
     <Compile Include="ViewModels\DirectoryImageViewModel.cs" />

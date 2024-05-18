@@ -40,6 +40,7 @@ namespace BackgroundWPF.ViewModels
             ImagesFolderPath = directoryService.GetMainDirectory();
             createFolderPresetCommand = new RelayCommand(CreateFolderPresetFile);
             selectionChangedCommand = new RelayCommand(ComboSelectionChangedCommand);
+            addImageToPresetCommand = new RelayCommand(AddImageToPresetCollection);
         }
 
         private DirectoryImage _selectedImage;
@@ -250,6 +251,39 @@ namespace BackgroundWPF.ViewModels
             StatusText = "Preset created from selected folder.";
             await Task.Delay(5000);
             StatusText = string.Empty;
+        }
+
+        private RelayCommand addImageToPresetCommand;
+        public RelayCommand AddImageToPresetCommand
+        {
+            get
+            {
+                return addImageToPresetCommand;
+            }
+        }
+
+        public void AddImageToPresetCollection()
+        {
+            var filePath = string.Empty;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "Image Files(*.BMP;*.JPG;*.JPEG;*.PNG)|*.BMP;*.bmp;*.JPG;*.jpg;*.JPEG;*.jpeg;*.PNG*;*.png";
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+                }
+            }
+
+            if (filePath != string.Empty)
+            {
+                DirectoryImage di = new DirectoryImage(filePath);
+                DirectoryImages.Add(di);
+                presetService.AddImage(SelectedImages, di);
+            }
         }
     }
 }
