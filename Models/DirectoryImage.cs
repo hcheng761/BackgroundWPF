@@ -19,16 +19,26 @@ namespace BackgroundWPF.Models
 
         public DirectoryImage()
         {
-            Directory = string.Empty;
-            ImageName = string.Empty;
-            ImageNameShortened = string.Empty;
+            directory = string.Empty;
+            imageName = string.Empty;
+            imageNameShortened = string.Empty;
+            identifier = CreateID();
         }
 
-        public DirectoryImage(string directory)
+        public DirectoryImage(string dir)
         {
-            Directory = directory;
-            ImageName = Path.GetFileName(directory);
-            ImageNameShortened = shortenName(ImageName);
+            directory = dir;
+            imageName = Path.GetFileName(dir);
+            imageNameShortened = shortenName(ImageName);
+            identifier = CreateID();
+        }
+
+        public DirectoryImage(DirectoryImage di, string p)
+        {
+            directory = di.directory;
+            imageName = di.imageName;
+            imageNameShortened = shortenName(ImageName);
+            identifier = di.identifier;
         }
 
         private string directory;
@@ -52,6 +62,13 @@ namespace BackgroundWPF.Models
             set { imageNameShortened = value; OnPropertyChanged(nameof(ImageNameShortened));}
         }
 
+        private double identifier;
+        public double Identifier
+        {
+            get { return identifier; }
+            set { identifier = value; OnPropertyChanged(nameof(Identifier)); }
+        }
+
         private DateTime dateTimeChange;
         public DateTime DateTimeChange
         {
@@ -64,6 +81,14 @@ namespace BackgroundWPF.Models
                 return name.Substring(0, 8) + "...";
             else
                 return name;
+        }
+
+        private double CreateID()
+        {
+            //Random rnd = new Random();
+            //return rnd.Next(1, Int32.MaxValue);
+
+            return Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalMilliseconds);
         }
     }
 }

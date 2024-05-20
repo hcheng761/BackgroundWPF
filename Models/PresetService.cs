@@ -11,18 +11,15 @@ namespace BackgroundWPF.Models
 {
     public class PresetService
     {
-        private static Dictionary<string, List<DirectoryImage>> MainPresetCollection;
-        private static Dictionary<string, List<DirectoryImage>> AddedImagesCollection;
-        private static Dictionary<string, List<DirectoryImage>> RemovedImagesCollection;
+        private static Dictionary<string, ImagesPreset> MainPresetCollection;
 
         private static string MainPreset;
         private static string PresetsDirectory;
+
         public PresetService() 
         {
             PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\" + "BackgroundPresets";
-            MainPresetCollection = new Dictionary<string, List<DirectoryImage>>();
-            AddedImagesCollection = new Dictionary<string, List<DirectoryImage>>();
-            RemovedImagesCollection = new Dictionary<string, List<DirectoryImage>>();
+            MainPresetCollection = new Dictionary<string, ImagesPreset>();
             CreatePresetFolderCollection();
         }
 
@@ -32,20 +29,8 @@ namespace BackgroundWPF.Models
 
             foreach (var presetFile in PresetFiles)
             {
-                XDocument doc = XDocument.Load(presetFile);
-                var nodes = doc.Root.Elements("Image");
-
-                if (nodes.Count() > 0)
-                {
-                    List<DirectoryImage> images = new List<DirectoryImage>();
-                    foreach (XElement node in nodes)
-                    {
-                        string path = node.Elements("Path").First().Value;
-                        if (File.Exists(path))
-                            images.Add(new DirectoryImage(path));
-                    }
-                    MainPresetCollection.Add(doc.Root.Elements("Name").First().Value, images);
-                }
+                ImagesPreset preset = new ImagesPreset(presetFile);
+                MainPresetCollection.Add(preset.GetPresetName(), preset);
             }
         }
 
@@ -54,32 +39,29 @@ namespace BackgroundWPF.Models
             return new List<string>(MainPresetCollection.Keys);
         }
 
-        public Dictionary<string, List<DirectoryImage>> GetPresetCollection()
+        public Dictionary<string, ImagesPreset> GetMainPresetCollection()
         {
             return MainPresetCollection;
         }
 
-        public Dictionary<string, List<DirectoryImage>> GetAddedImagesCollection()
+        public ImagesPreset GetPreset(string preset)
         {
-            return AddedImagesCollection;
-        }
-
-        public List<DirectoryImage> GetPresetImagesList(string preset)
-        {
-            if (preset != null)
-                return MainPresetCollection[preset];
-            else
-                return new List<DirectoryImage>();
+            return MainPresetCollection[preset];
         }
 
         public void AddImage(string preset, DirectoryImage path)
         {
-            AddedImagesCollection[preset].Add(path);
+            MainPresetCollection[preset].AddImage(path);
         }
 
-        public void RemoveImage(string image)
+        public void RemoveImage(ImagesPreset preset, DirectoryImage di)
         {
-            DirectoryImage di = MainPresetCollection[image];
+            preset.RemoveImage(di);
+        }
+
+        public void AddPreset(ImagesPreset preset)
+        {
+            MainPresetCollection.Add(preset.GetPresetName(), preset);
         }
     }
 }

@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DirectoryImage.cs" />
-    <Compile Include="Models\DirectoryService.cs" />
+    <Compile Include="Models\FolderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

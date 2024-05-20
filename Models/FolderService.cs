@@ -10,67 +10,68 @@ using System.Xml.Linq;
 
 namespace BackgroundWPF.Models
 {
-    public class DirectoryService
+    public class FolderService
     {
-        private static Dictionary<string, DirectoryImage> MainImageCollection;
-        private static string MainImageDirectory;
+        private static Dictionary<string, DirectoryImage> FolderImagesCollection;
+        private static string MainImagesFolder;
         private static string PresetsDirectory;
 
-        public DirectoryService()
+        public FolderService()
         {
-            MainImageDirectory = string.Empty;
+            MainImagesFolder = string.Empty;
             //MainImageDirectory = "H:\\Pictures";
             //MainImageDirectory = "C:\\Users\\Owner\\Pictures\\images";
             PresetsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\" + "BackgroundPresets";
-            MainImageCollection = new Dictionary<string, DirectoryImage>();
+            FolderImagesCollection = new Dictionary<string, DirectoryImage>();
             CreateCollection();
         }
 
         public Dictionary<string, DirectoryImage> GetImageDirectories()
         {
-            return MainImageCollection;
+            return FolderImagesCollection;
         }
 
         public List<DirectoryImage> GetListOfFolderImages()
         {
             List<DirectoryImage> images = new List<DirectoryImage>(); ;
 
-            if (MainImageCollection.Count == 0)
+            if (FolderImagesCollection.Count == 0)
                 CreateCollection();
-            foreach (KeyValuePair<string, DirectoryImage> e in MainImageCollection)
+            foreach (KeyValuePair<string, DirectoryImage> e in FolderImagesCollection)
                 images.Add(e.Value);
             return images;
         }
 
         private void CreateCollection()
         {
-            if (MainImageDirectory == string.Empty)
+            if (MainImagesFolder == string.Empty)
             {
                 return;
             }
 
-            IEnumerable<string> images = Directory.EnumerateFiles(MainImageDirectory, "*.*", SearchOption.TopDirectoryOnly)
+            IEnumerable<string> images = Directory.EnumerateFiles(MainImagesFolder, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(input => ImageFileExtensions.Extensions.Any(e => e.Equals(Path.GetExtension(input))));
 
             foreach (string image in images)
             {
-                MainImageCollection.Add(Path.GetFileName(image), new DirectoryImage(image));
+                DirectoryImage di = new DirectoryImage(image);
+                FolderImagesCollection.Add(di.ImageName, di);
             }
         }
 
         public void LoadNewCollection()
         {
-            if (MainImageDirectory == string.Empty)
+            if (MainImagesFolder == string.Empty)
                 return;
-            if (MainImageCollection.Count > 0)
-                MainImageCollection.Clear();
+            if (FolderImagesCollection.Count > 0)
+                FolderImagesCollection.Clear();
             CreateCollection();
         }
 
         public void Add(string path)
         {
             if (Directory.Exists(path))
-                MainImageCollection.Add(Path.GetFileName(path), new DirectoryImage(path));
+                FolderImagesCollection.Add(Path.GetFileName(path), new DirectoryImage(path));
         }
 
         public bool Update(DirectoryImage image)
@@ -81,9 +82,9 @@ namespace BackgroundWPF.Models
 
         public DirectoryImage displayFirstImage()
         {
-            if (MainImageCollection.Count > 0)
+            if (FolderImagesCollection.Count > 0)
             {
-                return MainImageCollection.OrderBy(k => k.Key).First().Value;
+                return FolderImagesCollection.OrderBy(k => k.Key).First().Value;
             }
             else
             {
@@ -104,13 +105,13 @@ namespace BackgroundWPF.Models
 
         public void ChangeMainDirectory(string directory)
         {
-            MainImageDirectory = directory;
+            MainImagesFolder = directory;
             LoadNewCollection();
         }
 
         public string GetMainDirectory()
         {
-            return MainImageDirectory;
+            return MainImagesFolder;
         }
 
         public void CreatePreset(string presetName)
@@ -123,21 +124,21 @@ namespace BackgroundWPF.Models
         public bool CreatePresetFromFolder()
         {
             Directory.CreateDirectory(PresetsDirectory);
-            if (MainImageDirectory != string.Empty)
+            if (MainImagesFolder != string.Empty)
             {
-                string dirName = new DirectoryInfo(MainImageDirectory).Name;
+                string dirName = new DirectoryInfo(MainImagesFolder).Name;
                 XDocument xdoc = new XDocument(new XElement("Preset", new XElement("Name", dirName)));
 
                 int counter = 0;
-                foreach (var k in MainImageCollection.Values)
+                foreach (var k in FolderImagesCollection.Values)
                 {
                     xdoc.Element("Preset").Add(new XElement("Image",
-                        new XElement("Path", k.Directory),
-                        new XElement("Time", (int)DateTime.Now.TimeOfDay.TotalSeconds + (counter * 10))));
+                        new XElement("Path", k.Directory), new XElement("ID", k.Identifier))
+                        );
                     counter++;
                 }
 
-                xdoc.Save(PresetsDirectory + "\\" + dirName + Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds) + ".xml");
+                xdoc.Save(PresetsDirectory + "\\" + dirName + Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalMilliseconds) + ".xml");
                 return true;
             }
             return false;

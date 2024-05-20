@@ -26,18 +26,18 @@ namespace BackgroundWPF.ViewModels
         }
         #endregion
 
-        DirectoryService directoryService;
+        FolderService folderService;
         PresetService presetService;
         public DirectoryImageViewModel()
         {
-            directoryService = new DirectoryService();
+            folderService = new FolderService();
             presetService = new PresetService();
             DirectoryImages = new ObservableCollection<DirectoryImage>();
             changeBGCommand = new RelayCommand(ButtonChangeBackground);
             loadMainFolderImagesCommand = new RelayCommand(LoadMainDirectoryImages);
             loadFolderCommand = new RelayCommand(LoadFolderModeImages);
             loadPresetsCommand = new RelayCommand(LoadPresetBox);
-            ImagesFolderPath = directoryService.GetMainDirectory();
+            ImagesFolderPath = folderService.GetMainDirectory();
             createFolderPresetCommand = new RelayCommand(CreateFolderPresetFile);
             selectionChangedCommand = new RelayCommand(ComboSelectionChangedCommand);
             addImageToPresetCommand = new RelayCommand(AddImageToPresetCollection);
@@ -102,18 +102,23 @@ namespace BackgroundWPF.ViewModels
             set { statusText = value; OnPropertyChanged(nameof(StatusText)); }
         }
 
-        private List<string> comboBoxItems;
-        public List<string> ComboBoxItems
+        private List<ImagesPreset> comboBoxItems;
+        public List<ImagesPreset> ComboBoxItems
         {
             get { return comboBoxItems; }
             set { comboBoxItems = value; OnPropertyChanged(nameof(ComboBoxItems)); }
         }
 
-        private string selectedImages;
-        public string SelectedImages
+        private string selectedImageCollection;
+        public string SelectedImageCollection
         {
-            get { return selectedImages; }
-            set { selectedImages = value; OnPropertyChanged(nameof(SelectedImages)); ComboSelectionChangedCommand(); }
+            get { return selectedImageCollection; }
+            set 
+            { 
+                    selectedImageCollection = value; 
+                    OnPropertyChanged(nameof(SelectedImageCollection)); 
+                    ComboSelectionChangedCommand(); 
+            }
         }
 
         private ObservableCollection<DirectoryImage> directoryImages;
@@ -145,13 +150,17 @@ namespace BackgroundWPF.ViewModels
 
         public void LoadPresetBox()
         {
-            ComboBoxItems = presetService.GetPresetNames();
+            ComboBoxItems = presetService.GetMainPresetCollection().Values.ToList();
             LoadPresetDirectoryImages();
         }
 
         public void LoadPresetDirectoryImages()
         {
-            DirectoryImages = new ObservableCollection<DirectoryImage>(presetService.GetPresetImagesList(SelectedImages));
+            if (SelectedImageCollection != null)
+            {
+                ImagesPreset p = presetService.GetPreset(SelectedImageCollection);
+                DirectoryImages = new ObservableCollection<DirectoryImage>(p.GetDirectoryImages());
+            }
         }
 
         private RelayCommand selectionChangedCommand;
@@ -178,7 +187,7 @@ namespace BackgroundWPF.ViewModels
         {
             try
             {
-                directoryService.ChangeWindowsBackground(_selectedImage);
+                folderService.ChangeWindowsBackground(_selectedImage);
             }
             catch
             {
@@ -208,9 +217,9 @@ namespace BackgroundWPF.ViewModels
                 }
                 if (SelectedPath != string.Empty)
                 {
-                    directoryService.ChangeMainDirectory(SelectedPath);
-                    DirectoryImages = new ObservableCollection<DirectoryImage>(directoryService.GetListOfFolderImages());
-                    ImagesFolderPath = directoryService.GetMainDirectory();
+                    folderService.ChangeMainDirectory(SelectedPath);
+                    DirectoryImages = new ObservableCollection<DirectoryImage>(folderService.GetListOfFolderImages());
+                    ImagesFolderPath = folderService.GetMainDirectory();
                 }
             }
             catch
@@ -227,8 +236,8 @@ namespace BackgroundWPF.ViewModels
 
         public void LoadFolderModeImages()
         {
-            DirectoryImages = new ObservableCollection<DirectoryImage>(directoryService.GetListOfFolderImages());
-            ImagesFolderPath = directoryService.GetMainDirectory();
+            DirectoryImages = new ObservableCollection<DirectoryImage>(folderService.GetListOfFolderImages());
+            ImagesFolderPath = folderService.GetMainDirectory();
         }
 
         private RelayCommand createFolderPresetCommand;
@@ -242,8 +251,16 @@ namespace BackgroundWPF.ViewModels
 
         public void CreateFolderPresetFile()
         {
-            if (directoryService.CreatePresetFromFolder())
-                Task.Run(ChangeStatusText);
+            if (ImagesFolderPath != string.Empty && DirectoryImages.Count > 0)
+            {
+                string path = folderService.GetMainDirectory();
+                ImagesPreset newPreset = new ImagesPreset(folderService.GetMainDirectory(), folderService.GetListOfFolderImages());
+
+                presetService.AddPreset(newPreset);
+                folderService.CreatePresetFromFolder();
+                ChangeStatusText();
+            }
+
         }
 
         public async void ChangeStatusText()
@@ -282,7 +299,7 @@ namespace BackgroundWPF.ViewModels
             {
                 DirectoryImage di = new DirectoryImage(filePath);
                 DirectoryImages.Add(di);
-                presetService.AddImage(SelectedImages, di);
+                presetService.AddImage(SelectedImageCollection, di);
             }
         }
     }
