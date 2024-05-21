@@ -42,6 +42,11 @@ namespace BackgroundWPF.Models
             return images;
         }
 
+        public string GetFolderName()
+        {
+            return Path.GetDirectoryName(MainImagesFolder + "\\").Split(Path.DirectorySeparatorChar).Last();
+        }
+
         private void CreateCollection()
         {
             if (MainImagesFolder == string.Empty)
@@ -129,16 +134,14 @@ namespace BackgroundWPF.Models
                 string dirName = new DirectoryInfo(MainImagesFolder).Name;
                 XDocument xdoc = new XDocument(new XElement("Preset", new XElement("Name", dirName)));
 
-                int counter = 0;
                 foreach (var k in FolderImagesCollection.Values)
                 {
                     xdoc.Element("Preset").Add(new XElement("Image",
                         new XElement("Path", k.Directory), new XElement("ID", k.Identifier))
-                        );
-                    counter++;
+                        );                
                 }
 
-                xdoc.Save(PresetsDirectory + "\\" + dirName + Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalMilliseconds) + ".xml");
+                xdoc.Save(PresetsDirectory + "\\" + dirName + Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds) + ".xml");
                 return true;
             }
             return false;

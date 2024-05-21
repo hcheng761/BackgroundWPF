@@ -85,10 +85,9 @@ namespace BackgroundWPF.Models
 
         private double CreateID()
         {
-            //Random rnd = new Random();
-            //return rnd.Next(1, Int32.MaxValue);
+            Random rnd = new Random(); 
 
-            return Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalMilliseconds);
+            return rnd.Next(1, Int32.MaxValue); //Math.Round(DateTime.Now.Subtract(DateTime.MinValue).TotalMilliseconds);
         }
     }
 }

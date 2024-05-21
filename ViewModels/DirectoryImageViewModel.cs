@@ -22,7 +22,6 @@ namespace BackgroundWPF.ViewModels
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            //SelectedImage = new DirectoryImage();
         }
         #endregion
 
@@ -253,8 +252,7 @@ namespace BackgroundWPF.ViewModels
         {
             if (ImagesFolderPath != string.Empty && DirectoryImages.Count > 0)
             {
-                string path = folderService.GetMainDirectory();
-                ImagesPreset newPreset = new ImagesPreset(folderService.GetMainDirectory(), folderService.GetListOfFolderImages());
+                ImagesPreset newPreset = new ImagesPreset(folderService.GetFolderName(), folderService.GetListOfFolderImages());
 
                 presetService.AddPreset(newPreset);
                 folderService.CreatePresetFromFolder();
