@@ -33,12 +33,12 @@ namespace BackgroundWPF.Models
             identifier = CreateID();
         }
 
-        public DirectoryImage(DirectoryImage di, string p)
+        public DirectoryImage(string path, int id)
         {
-            directory = di.directory;
-            imageName = di.imageName;
-            imageNameShortened = shortenName(ImageName);
-            identifier = di.identifier;
+            directory = path;
+            imageName = Path.GetFileName(path);
+            imageNameShortened = shortenName(imageName);
+            identifier = id;
         }
 
         private string directory;

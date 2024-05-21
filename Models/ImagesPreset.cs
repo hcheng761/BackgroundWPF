@@ -68,7 +68,12 @@ namespace BackgroundWPF.Models
                 string path = nodes.Elements("Path").First().Value;
                 if (File.Exists(path))
                 {
-                    ImageCollection.Add(doc.Root.Elements("Name").First().Value, new DirectoryImage(path));
+                    foreach (var node in nodes)
+                    {
+                        string imagePath = node.Elements("Path").First().Value;
+                        int id = Convert.ToInt32(node.Elements("ID").First().Value);
+                        ImageCollection.Add(Path.GetFileName(imagePath), new DirectoryImage(imagePath, id));
+                    }
                 }
             }
         }

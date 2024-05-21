@@ -122,9 +122,11 @@
                 <TextBox Grid.Column="0" Text="{Binding Path=ImagesFolderPath}" IsEnabled="{Binding Path=FolderModeChecked}"  VerticalAlignment="Center" Width="auto" Height="auto"/>
                 <Button Grid.Column="1" Command="{Binding Path=LoadMainFolderImagesCommand}" Content="..." Margin="1,0,0,0" VerticalAlignment="Center" Width="auto" Height="auto"/>
             </Grid>
-            <ComboBox Grid.Row="2"  ItemsSource="{Binding Path=ComboBoxItems}"
-                                    Text="{Binding ImagesPreset.PresetName, UpdateSourceTrigger=PropertyChanged}" 
-                                    SelectedValue="{Binding Path=SelectedImageCollection, Mode=TwoWay}" />
+            <ComboBox Grid.Row="2"  
+                      ItemsSource="{Binding Path=ComboBoxItems}"
+                      DisplayMemberPath="PresetName"
+                      SelectedItem="{Binding SelectedPreset}"/>
+
             <ListView Name="dgDirectoryImages"
                       HorizontalAlignment="Stretch"
                       Grid.Row="3"

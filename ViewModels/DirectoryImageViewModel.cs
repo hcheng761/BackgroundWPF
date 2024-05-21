@@ -109,14 +109,14 @@ namespace BackgroundWPF.ViewModels
             set { comboBoxItems = value; OnPropertyChanged(nameof(ComboBoxItems)); }
         }
 
-        private string selectedImageCollection;
-        public string SelectedImageCollection
+        private ImagesPreset selectedPreset;
+        public ImagesPreset SelectedPreset
         {
-            get { return selectedImageCollection; }
+            get { return selectedPreset; }
             set 
             { 
-                    selectedImageCollection = value; 
-                    OnPropertyChanged(nameof(SelectedImageCollection)); 
+                    selectedPreset = value; 
+                    OnPropertyChanged(nameof(SelectedPreset)); 
                     ComboSelectionChangedCommand(); 
             }
         }
@@ -156,9 +156,9 @@ namespace BackgroundWPF.ViewModels
 
         public void LoadPresetDirectoryImages()
         {
-            if (SelectedImageCollection != null)
+            if (SelectedPreset != null)
             {
-                ImagesPreset p = presetService.GetPreset(SelectedImageCollection);
+                ImagesPreset p = presetService.GetPreset(SelectedPreset.PresetName);
                 DirectoryImages = new ObservableCollection<DirectoryImage>(p.GetDirectoryImages());
             }
         }
@@ -299,7 +299,7 @@ namespace BackgroundWPF.ViewModels
             {
                 DirectoryImage di = new DirectoryImage(filePath);
                 DirectoryImages.Add(di);
-                presetService.AddImage(SelectedImageCollection, di);
+                presetService.AddImage(SelectedPreset.PresetName, di);
             }
         }
     }
